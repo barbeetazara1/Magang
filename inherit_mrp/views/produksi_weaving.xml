@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- List View -->
+        <record model="ir.ui.view" id="produksi_weaving_tree">
+            <field name="name">produksi.weaving.tree</field>
+            <field name="model">produksi.weaving</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="date"/>
+                    <field name="beam_id"/>
+                    <field name="machine_id"/>
+                    <field name="rpm"/>
+                    <field name="kd_operator"/>
+                    <field name="shift"/>
+                    <field name="counter_awal"/>
+                    <field name="counter_akhir"/>
+                    <field name="counter_pjg"/>
+                    <field name="quantity"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Form View -->
+        <record model="ir.ui.view" id="produksi_weaving_form">
+            <field name="name">produksi.weaving.form</field>
+            <field name="model">produksi.weaving</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                        <button name="button_confirm" type="object" string="Confirm" attrs="{'invisible': [('state', 'in', ('confirm', 'done'))]}" class="oe_highlight"/>
+                        <button name="button_mark_as_done" type="object" string="Mark As Done" attrs="{'invisible': [('state', 'in', ('draft', 'done'))]}" class="oe_highlight"/>
+                        <button name="set_to_draft" type="object" string="Set to draft" attrs="{'invisible': [('state', 'in', ('draft', 'confirm'))]}"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="beam_id" required="1"/>
+                                <field name="beam_detail_id" domain="[('beaming_id','=',beam_id)]" string="Beam"/>
+                                <field name="lot_id"/>
+                                <field name="machine_id" required="1"/>
+                                <field name="date"/>
+                                <field name="rpm"/>
+                                <field name="kd_operator" required="1"/>
+                                <field name="shift" required="1"/>
+                            </group>
+                            <group>
+                                <field name="counter_awal"/>
+                                <field name="counter_akhir"/>
+                                <field name="quantity"/>
+                                <field name="counter_pjg"/>
+                                
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Weaving Details">
+                                <field name="weaving_details">
+                                    <tree>
+                                        <field name="lot_id"/>
+                                        <field name="quantity"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_open_produksi_weaving">
+            <field name="name">Produksi Weaving</field>
+            <field name="res_model">produksi.weaving</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem 
+            id="produksi_weaving_action"
+            name="Produksi Weaving"
+            parent="mrp.menu_mrp_manufacturing"
+            sequence="9"
+            action="action_open_produksi_weaving"
+        />
+    </data>
+</odoo>
