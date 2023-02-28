@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- List View -->
+        <record model="ir.ui.view" id="persiapan_beaming_view_tree">
+            <field name="name">persiapan.beaming.tree</field>
+            <field name="model">persiapan.beaming</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="jml_creel"/>
+                    <field name="tot_lusi"/>
+                    <field name="no_param_proses"/>
+                    <field name="no_param_obat"/>
+                    <field name="speed"/>
+                    <field name="tekanan_im"/>
+                    <field name="tekanan_sq"/>
+                    <field name="tot_draff"/>
+                    <field name="spu"/>
+                    <field name="shift"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Form View -->
+        <record model="ir.ui.view" id="persiapan_beaming_view_form">
+            <field name="name">persiapan.beaming.form</field>
+            <field name="model">persiapan.beaming</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                    </header>
+                    <sheet>
+                        <group>
+                        <group>
+                            <!--<field name="production_id" options="{'no_open': True, 'no_create': True}"/>-->
+                            <field name="tgl_sizing" readonly="1" force_save="1"/> 
+                            <field name="tgl_beaming" readonly="1" force_save="1"/>
+                            <field name="jml_creel" readonly="1" force_save="1"/>
+                            <field name="tot_lusi" readonly="1" force_save="1"/>
+                            <field name="lebar"/>
+                            <field name="panjang"/>
+                            <field name="panjang_mtr"/>
+                            <field name="jmlh_beam"/>
+                            <field name="no_param_proses"/>
+                            <field name="shift" required="1"/>
+                        </group>
+                            <group>
+                                <field name="param_proses"/>
+                                <field name="act_denier"/>
+                                <field name="jenis_obat"/>
+                                <field name="no_param_obat"/>
+                                <field name="speed"/>
+                                <field name="tekanan_im"/>
+                                <field name="tekanan_sq"/>
+                                <field name="tot_draff"/>
+                                <field name="index_benang"/>
+                                <field name="spu"/>
+                                <field name="aktual"/>
+                                <field name="creel"/>
+                                <field name="chamber"/>
+                                <field name="winding"/>
+                                <field name="hardnes"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="persiapan_beaming_view_action">
+            <field name="name">Persiapan Beam</field>
+            <field name="res_model">persiapan.beaming</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem id="persiapan_beaming_menu" name="Persiapan Beaming" 
+            action="persiapan_beaming_view_action"
+            parent="mrp.menu_mrp_manufacturing" sequence="8"/>
+    </data>
+</odoo>
