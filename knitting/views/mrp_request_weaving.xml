@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- List View -->
+        <record model="ir.ui.view" id="mrp_request_tree_weaving">
+            <field name="name">mrp.request.tree.weaving</field>
+            <field name="model">mrp.request</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="tanggal" />
+                    <field name="production_type_id" />
+                    <field name="partner_id" />
+                    <field name="product_id" />
+                    <field name="pakan" />
+                    <field name="pic" />
+                    <field name="lebar" />
+                    <field name="std_susut" />
+                    <field name="jumlah_spk"/>
+                    <field name="location_id" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record model="ir.ui.view" id="mrp_request_form_weaving">
+            <field name="name">mrp.request.form.weaving</field>
+            <field name="model">mrp.request</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <!-- <button name='request_material' type='object' class="oe_highlight" string='Request Material' states="confirm" /> -->
+                        <button name='action_confirm' type='object' class="oe_highlight" string='Confirm' states="draft" />
+                        <button name='action_draft' type='object' string='Set to draft' states="confirm" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object" name="action_view_picking" class="oe_stat_button" icon="fa-truck">
+                                <field name="picking_count" widget="statinfo" string="Request" help="Incoming Greige"/>
+                                <field name="picking_ids" invisible="1"/>
+                            </button>
+                        </div>
+                        <div class="oe_title" string="Ref">
+                            <h1>
+                                <field name="name" readonly="1" />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="tanggal" />
+                                <field name="production_type_id" options="{'no_open': True, 'no_create': True}" required="1"/>
+                                <field name="mkt_production_id" options="{'no_open': False, 'no_create': True}"/>
+                                <field name="quantity" widget="integer"/>
+                                <field name="jml_mesin" widget="integer"/>
+                                <field name="jumlah_spk" attrs="{'invisible':[('production_type_id', '=', 2)]}" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="picking_type_id" attrs="{'invisible':[('production_type_id', '=', 2)]}" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="greige_mkt_ids" widget="many2many_tags" invisible="1"/>
+                                <field name="greige_id" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="component_product_category_ids" invisible="1"/>
+                                <!-- <field name="lot_id" domain="[('product_id', '=', greige_id)]" required="1"/> -->
+                            </group>
+                            <group>
+                                <field name="partner_id" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="location_id" attrs="{'invisible':[('production_type_id', '=', 2)]}"/>
+                                <field name="production_type_id" options="{'no_open': True, 'no_create': True}" invisible="1"/>
+                                <field name="yarn_id" domain="[('categ_id','=',199)]" string="Lusi"/>
+                                <field name="component_ids" string="Pakan" required="1">
+                                    <tree editable="bottom">
+                                        <field name="yarn_id"/>
+                                        <field name="sisir_id"/>
+                                    </tree>
+                                </field>
+                                <!-- <field name="yarn_template_id" attrs="{'invisible':[('production_type_id', '=', 2)]}" required="1"/> -->
+                                <!-- <field name="sisir_id" attrs="{'invisible':[('component_type', '!=', 'one')]}"/>
+                                <field name="total_end" attrs="{'invisible':[('component_type', '!=', 'one')]}"/>
+                                <field name="total_creel" attrs="{'invisible':[('component_type', '!=', 'one')]}"/>
+                                <field name="total_beam" attrs="{'invisible':[('component_type', '!=', 'one')]}"/> -->
+                                <field name="batched_count" invisible="1" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Manufacturing Order">
+                                <field name="mrp_ids" attrs="{'readonly':[('state','=','draft')]}">
+                                    <tree string="Manufacturing Order " editable="bottom" options="{'no_open':False}">
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="product_uom_category_id" invisible="1"/>
+                                        <field name="name" readonly="1"/>
+                                        <field name="product_id" readonly="1" optional="show"/>
+                                        <field name="machine_id"/>
+                                        <field name="beam_id" attrs="{'column_invisible': [('parent.production_type_id', '=', 2)]}"/>
+                                        <field name="tgl_naik_beam" string="Naik Beam" attrs="{'column_invisible': [('parent.production_type_id', '=', 2)]}"/>
+                                        <field name="tgl_hbs_beam" string="Habis Beam" attrs="{'column_invisible': [('parent.production_type_id', '=', 2)]}"/>
+                                        <!-- <field name="lebar"/> -->
+                                        <!-- <field name="std_susut" attrs="{'column_invisible': [('parent.production_type_id', '=', 2)]}"/> -->
+                                        <field name="remaining_qty" attrs="{'column_invisible': [('parent.production_type_id', '!=', 2)]}"/>
+                                        <field name="product_qty" sum="Total Qty" string="Qty" readonly="1" optional="show" widget="integer"/>
+                                        <field name="qty_hasil" sum="Total Qty" string="Qty Hasil" readonly="1" optional="show" widget="integer"/>
+                                        <field name="product_uom_id" string="Unit of Measure" options="{'no_open':True,'no_create':True}" groups="uom.group_uom" optional="show"/>
+                                        <field name="state" optional="show" widget="badge" decoration-success="state == 'done'" decoration-info="state not in ('done', 'cancel')"/>
+                                        <button name="open_mo_weaving_form" type="object" string="Open MO" class="bg-primary btn-sm"/>
+                                    </tree>
+                                </field>
+
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="mrp_request_weaving_action">
+            <field name="name">Manufacturing Request Weaving</field>
+            <field name="res_model">mrp.request</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('production_type_id', '=', 3)]</field>
+            <field name="context">{'default_production_type_id': 3}</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('knitting.mrp_request_tree_weaving')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('knitting.mrp_request_form_weaving')})]"/>
+        </record>
+
+
+        <menuitem id="menu_mrp_request_weaving" name="Weaving" sequence="1" parent="mrp_request_menu" action="mrp_request_weaving_action"/>
+
+
+    </data>
+</odoo>
