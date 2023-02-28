@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        
+        <!-- Form View -->
+        <record model="ir.ui.view" id="post_inventory_view_form">
+            <field name="name">post.inventory.view.form</field>
+            <field name="model">post.inventory.weaving</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_post_inventory_weaving">
+            <field name="name">Post Inventory Weaving</field>
+            <field name="res_model">post.inventory.weaving</field>
+            <field name="view_mode">form</field>
+        </record>
+    </data>
+</odoo>
