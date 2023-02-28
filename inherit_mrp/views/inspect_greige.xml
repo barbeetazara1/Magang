@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- List View -->
+        <record model="ir.ui.view" id="inspect_greige_tree">
+            <field name="name">inspect.greige.tree</field>
+            <field name="model">inspect.greige</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="production_id"/>
+                    <field name="production_type"/>
+                    <field name="product_id"/>
+                    <field name="beam_id"/>
+                    <field name="location_id"/>
+                    <field name="jmlh_roll"/>
+                    <field name="tot_panjang"/>
+                    <field name="uom_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Form View -->
+        <record model="ir.ui.view" id="inspect_greige_form">
+            <field name="name">inspect.greige.form</field>
+            <field name="model">inspect.greige</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="production_id"/>
+                                <field name="production_type"/>
+                                <field name="product_id"/>
+                                <field name="beam_id"/>
+                            </group>
+                            <group>
+                                <field name="location_id"/>
+                                <field name="jmlh_roll"/>
+                                <field name="tot_panjang"/>
+                                <field name="uom_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Inspect Details">
+                                <field name="inspect_detail_ids">
+                                    <tree>
+                                        <field name="lot_id"/>
+                                        <field name="product_id"/>
+                                        <field name="grade_id"/>
+                                        <field name="shift"/>
+                                        <field name="employee_id"/>
+                                        <field name="quantity"/>
+                                        <field name="uom_id"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="lot_id"/>
+                                                <field name="product_id"/>
+                                                <field name="grade_id"/>
+                                                <field name="shift"/>
+                                            </group>
+                                            <group>
+                                                <field name="employee_id"/>
+                                                <field name="quantity"/>
+                                                <field name="uom_id"/>
+                                            </group>
+                                        </group>
+                                        <notebook>
+                                            <page string="Defect Details">
+                                                <field name="defect_ids">
+                                                    
+                                                </field>
+                                            </page>
+                                        </notebook>
+                                    </form>
+                            </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_inspect_greige">
+            <field name="name">Inspect Greige</field>
+            <field name="res_model">inspect.greige</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem 
+            id="inspect_greige_open"
+            name="Inspect Greige"
+            parent="mrp.menu_mrp_manufacturing"
+            sequence="10"
+            action="action_inspect_greige"
+        />
+
+    </data>
+</odoo>
