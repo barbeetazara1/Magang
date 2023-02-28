@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>        
+        <!-- Form View -->
+        <record model="ir.ui.view" id="quantity_beam_wizard_view">
+            <field name="name">quantity.beam.wizard.view</field>
+            <field name="model">quantity.beam.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <!-- <h2><field name="nama_kolom"/></h2> -->
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="production_id" readonly="1"/>
+                                <field name="production_qty" readonly="1"/>
+                                <field name="lot_id" options="{'no_create': True}"/>
+                                <field name="product_qty" readonly="1"/>
+                                <field name="produce_qty"/>
+                                <field name="qty_sisa" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Beam">
+                                <field name="beaming_ids" widget="one2many" domain="[('state', '=', False)]">
+                                    <tree>
+                                        <field name="kode_prod"/>
+                                        <field name="te_helai"/>
+                                        <field name="qty_beam"/>
+                                        <field name="jml_beam"/>
+                                        <field name="type_beam_id"/>
+                                        <field name="lebar_beam"/>
+                                        <field name="total_panjang"/>
+                                        <field name="unit_wv"/>
+                                        <field name="date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button name="action_refresh_qty" type="object" string="Produce" class="oe_highlight"/>
+                        <button name="cancel" type="special" string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_beam_wizard">
+            <field name="name">Post Inventory</field>
+            <field name="res_model">quantity.beam.wizard</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+        </record>
+    </data>
+</odoo>
