@@ -134,11 +134,12 @@ class PersiapanBeaming(models.Model):
     jml_creel       = fields.Float('Jml Creel')
     tot_lusi        = fields.Float('Total Lusi')
     no_param_proses = fields.Float('Param Obat')
-    no_param_obat   = fields.Float('Param Obat')
+    param_id        = fields.Many2one('master.parameter.obat', string="Parameter Obat")
+    jenis_obat      = fields.Float(related="param_id.jenis_obat",string="Jenis Obat (%)")
     speed           = fields.Float('Speed')
     tekanan_im      = fields.Float('Tekanan IM')
     tekanan_sq      = fields.Float('Tekanan SQ')
-    tot_draff       = fields.Float('Tot Draff')
+    tot_draff       = fields.Char('Tot Draff')
     spu             = fields.Char(string='Standar SPU')
     aktual          = fields.Char(string='Aktual')
     creel           = fields.Char(string='Creel')
@@ -146,6 +147,9 @@ class PersiapanBeaming(models.Model):
     winding         = fields.Char(string='Winding')
     hardnes         = fields.Char(string='Hardnes')
     param_proses    = fields.Char(string='Param Proses')
+    tension_stand   = fields.Char(string='Tension Beam Stand')
+    tension_winding = fields.Char(string='Tension Beam Winding')
+    tension_harned  = fields.Char(string='Tension Beam Harned')
     shift           = fields.Selection([("A","A"),("B","B"),("C","C"),("D","D")], string='Shift', store=True,)
     index_benang    = fields.Float('Index',help="Index Benang per 30 cm")
     act_denier      = fields.Float('Aktual Denier',help="Aktual Denier")
@@ -156,11 +160,22 @@ class PersiapanBeaming(models.Model):
     jmlh_beam       = fields.Float(related="beaming_id.jml_beam", string='Jumlah beam')
     # panjang_mtr     = fields.Float(string='Panjang (Meter)', compute="_compute_panjang_mtr")
     panjang_mtr     = fields.Float(string='Panjang (Meter)')
+    catatan         = fields.Text(string='Catatan')
 
     # @api.depends('panjang_mtr')
     # def _compute_panjang_mtr(self):
     #     for pjg in self:
     #         pjg.panjang = 0
+    
+    @api.onchange('param_id')
+    def onchange_param_id(self):
+        _logger.warning('='*40)
+        _logger.warning('='*40)
+        _logger.warning('ONCHANGE PARAM')
+        _logger.warning('='*40)
+        _logger.warning('='*40)
+        self.jenis_obat = self.param_id.jenis_obat
+    
 
     @api.onchange('beaming_id')
     def onchange_kd_prod(self):
