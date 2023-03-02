@@ -10,7 +10,7 @@
                     <field name="jml_creel"/>
                     <field name="tot_lusi"/>
                     <field name="no_param_proses"/>
-                    <field name="no_param_obat"/>
+                    <field name="param_id"/>
                     <field name="speed"/>
                     <field name="tekanan_im"/>
                     <field name="tekanan_sq"/>
@@ -42,24 +42,37 @@
                             <field name="panjang_mtr"/>
                             <field name="jmlh_beam"/>
                             <field name="no_param_proses"/>
-                            <field name="shift" required="1"/>
+                            <field name="shift"/>
+                            <field name="catatan"/>
                         </group>
                             <group>
-                                <field name="param_proses"/>
+                                <field name="param_proses"/> 
                                 <field name="act_denier"/>
                                 <field name="jenis_obat"/>
-                                <field name="no_param_obat"/>
+                                <label for="param_id" string="Parameter Obat"/>
+                                <div class="o_row no-gutters d-flex">
+                                    <div class="o_row">
+                                        <field name="param_id" class="oe_inline text-left" options="{'no_open': True, 'no_create': True}"/>
+                                        /
+                                    </div>
+                                    <label for="jenis_obat" string="" class="oe_inline"/>
+                                    <field name="jenis_obat" class="oe_inline text-left" force_save="1" readonly="1"/>
+                                    <span class="text-bf">%</span>
+                                </div>
                                 <field name="speed"/>
                                 <field name="tekanan_im"/>
                                 <field name="tekanan_sq"/>
-                                <field name="tot_draff"/>
-                                <field name="index_benang"/>
+                                <!-- ada kodenya dibuat char buat tot_draff -->
+                                <field name="tot_draff"/> 
                                 <field name="spu"/>
                                 <field name="aktual"/>
                                 <field name="creel"/>
                                 <field name="chamber"/>
                                 <field name="winding"/>
                                 <field name="hardnes"/>
+                                <field name="tension_stand"/>
+                                <field name="tension_winding"/>
+                                <field name="tension_harned"/>
                             </group>
                         </group>
                     </sheet>
