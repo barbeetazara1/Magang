@@ -668,6 +668,19 @@ class ManufacturingRequest(models.Model):
                             # start_working = timedelta(hours=6,minutes=30) 
                             # dt_start =  dt_start + start_working 
                             
+                            raw_line = []
+                            raw_line.append(
+                                (0,0,{
+                                "lot_id": self.lot_benang_id.id,
+                                'product_id': self.lot_benang_id.product_id.id,
+                                'product_uom_id': self.lot_benang_id.product_id.uom_id.id,
+                                'qty_done': self.quantity,
+                                'location_id': self.production_type_id.component_location.id,
+                                'location_dest_id': 15,
+                                'company_id': 1,
+                                })
+                                    )
+                            
                             raw_data = []
                             if self.component_type == 'one':
                                 raw_data.append(
@@ -679,6 +692,7 @@ class ManufacturingRequest(models.Model):
                                         "product_uom":self.yarn_id.uom_id.id,
                                         "location_id":self.production_type_id.finished_location.id,
                                         "location_dest_id":15,
+                                        "move_line_ids":raw_line,
                                         })
                                 )
                             else:
@@ -694,6 +708,8 @@ class ManufacturingRequest(models.Model):
                                         "location_dest_id":15,
                                         })
                                     )
+                            
+
                             
                             mrp_ids.append((0,0,{
                                 "name":mo_name,
@@ -729,6 +745,7 @@ class ManufacturingRequest(models.Model):
                                 "location_src_id":self.production_type_id.component_location.id,
                                 "location_dest_id":self.production_type_id.finished_location.id,
                                 "move_raw_ids": raw_data,
+                                # "move_line_ids": raw_line,
                                 "beaming_ids": [(0,0,{
                                         "kode_prod" :kode_prod +'-' + self.env['ir.sequence'].next_by_code('kode.prod.beaming'),
                                         # "te_helai"  :self.total_end,
@@ -934,7 +951,7 @@ class ManufacturingRequest(models.Model):
                 for mrp in self.mrp_ids:
                     mrp._onchange_bom_id()
                     mrp._onchange_move_raw()
-                    mrp._onchange_move_finished()
+                    # mrp._onchange_move_finished()
                     mrp.update({'product_qty': self.quantity_shrinkage})
                     # mrp.action_confirm()
                     # for wo in mrp.workorder_ids.filtered(lambda x:x.workcenter_id.is_planning):
@@ -959,7 +976,7 @@ class ManufacturingRequest(models.Model):
                     #         })],})
                     production._onchange_bom_id()
                     production._onchange_move_raw()
-                    production._onchange_move_finished()
+                    # production._onchange_move_finished()
                     # production._onchange_workorder_ids()
                     # production.get_parameter_process()
             # SEMENTARA DI COMMENT
