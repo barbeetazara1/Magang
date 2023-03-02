@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="report.paperformat" id="paperformat_report_mo_sizing">
+            <field name="name">Print MO Sizing A4</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_right">0</field>
+            <field name="margin_left">0</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">15</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report id="action_report_mo_sizing" model="mrp.request" string="Print MO Sizing" report_type="qweb-pdf" name="my_report.report_mo_sizing" file="my_report.report_mo_sizing" />
+
+        <record id="action_report_mo_sizing" model="ir.actions.report">
+            <field name="paperformat_id" eval="paperformat_report_mo_sizing" />
+        </record>
+
+        <template id="report_mo_sizing">
+            <t t-call="web.basic_layout">
+                <style>
+                .top .title {
+                    font-size: 20px;
+                    font-weight: 700;
+                    margin-bottom: 0;
+                }
+
+                .top .row .col .title p {
+                    font-size: 12px;
+                    font-weight: 700;
+                }
+
+                .top-table {
+                    line-height: 20px;
+                }
+
+                hr {
+                    border: 1px double black;
+                }
+
+                .sec-table-benang {
+                    margin-bottom:10px;
+                }
+
+                .table-data-benang tr th {
+                    border: 1px solid black;
+                    font-size: 14px;
+                }
+
+                .table-data-benang tr td {
+                    border: 1px solid black;
+                    text-align: center;
+                    font-size: 12px;
+                }
+
+                .table-data tr th {
+                    border: 1px solid black;
+                    font-size: 14px;
+                }
+
+                .table-data tr td {
+                    border: 1px solid black;
+                    text-align: center;
+                    font-size: 12px;
+                }
+
+                .tanda-tangan {
+                    margin-top: 30px;
+                    font-size: 12px;
+                }
+
+                .tanda-tangan .row .col {
+                    line-height: 1px;
+                }
+
+                .tanda-tangan .row .col .p-label{
+                    padding-bottom: 40px;
+                }
+                </style>
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page">
+
+                        <div class="top">
+                            <div class="row">
+                                <div class="col-4">
+                                PMTI
+                                </div>
+                                <div class="col-4 text-center">
+                                    <h4 class="title">JOB ORDER SIZING</h4>
+                                    <p class="font-weight-bold">
+                                        <span t-field="doc.name"/>
+                                    </p>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <p>PRC.11.7.Rev-03</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="top-table">
+                            <table>
+                                <tr>
+                                    <td>Tanggal</td>
+                                    <td class="pl-3 pr-2">:</td>
+                                    <td>
+                                        <span t-field="doc.tanggal"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Unit Sizing</td>
+                                    <td class="pl-3 pr-2">:</td>
+                                    <td>
+                                        <span t-field="doc.machine_id"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Jenis Benang</td>
+                                    <td class="pl-3 pr-2">:</td>
+                                    <td>
+                                        <span t-field="doc.yarn_id"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Kode Benang</td>
+                                    <td class="pl-3 pr-2">:</td>
+                                    <td>
+                                        <span t-field="doc.yarn_id.default_code"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Berat Bng/Cns</td>
+                                    <td class="pl-3 pr-2">:</td>
+                                    <td>
+                                        <span t-field="doc.berat_per_cones"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>No Kontrak</td>
+                                    <td class="pl-3 pr-2">:</td>
+                                    <!--<td><span t-field="doc.sc_id"/></td>-->
+                                </tr>
+                            </table>
+                        </div>
+
+                        <hr/>
+                        <t t-foreach="doc.mrp_ids" t-as="production">
+                            <div class="table-top-sub">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <table>
+                                            <tr>
+                                                <td>Nama Corak</td>
+                                                <td class="pl-3 pr-2">:</td>
+                                                <td>
+                                                    <span t-field="production.greige_name"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Sisir</td>
+                                                <td class="pl-3 pr-2">:</td>
+                                                <td>
+                                                    <span t-field="production.sisir_id"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total End</td>
+                                                <td class="pl-3 pr-2">:</td>
+                                                <td>
+                                                    <span t-field="production.total_end"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-6">
+                                        <table>
+                                            <tr>
+                                                <td>Jml Creel/Cns</td>
+                                                <td class="pl-3 pr-2">:</td>
+                                                <td>
+                                                    <span t-field="production.total_creel"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Jml Beam Stand</td>
+                                                <td class="pl-3 pr-2">:</td>
+                                                <td><span t-field="production.jml_beam_stand"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Order</td>
+                                                <td class="pl-3 pr-2">:</td>
+                                                <td><span t-esc="'{0:,.0f}'.format(production.product_qty)"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- </div> -->
+
+                            <div>
+                                <table class="table-data" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="10" class="text-center">RENCANA BEAMING</th>
+                                            <th colspan="6" class="text-center">AKTUALISASI</th>
+                                        </tr>
+                                        <tr>
+                                            <td>No</td>
+                                            <td>Kode Prod</td>
+                                            <td>TE (Helai)</td>
+                                            <td>Pjg/Beam (Yard)</td>
+                                            <td>Jml Beam</td>
+                                            <td>Type Beam</td>
+                                            <td>Lbr Beam (Inc)</td>
+                                            <td>Total Pjg</td>
+                                            <td>Unit WV</td>
+                                            <td>DT</td>
+                                            <td>DT</td>
+                                            <td>Jml</td>
+                                            <td>Akm</td>
+                                            <td>Pjg Bng</td>
+                                            <td>Pjg Bng</td>
+                                            <td>Ket</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="no" t-value="0"/>
+                                        <t t-set="ttl_jml_beam" t-value="0"/>
+                                        <t t-set="ttl_pjg_beam" t-value="0"/>
+
+                                        <tr t-foreach="production.beaming_ids" t-as="beam">
+                                            <t t-set="no" t-value="no + 1"/>
+                                            <t t-set="ttl_jml_beam" t-value="ttl_jml_beam + beam.jml_beam"/>
+                                            <t t-set="ttl_pjg_beam" t-value="ttl_pjg_beam + beam.total_panjang"/>
+                                            <td>
+                                                <span t-esc="no"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="beam.kode_prod"/>
+                                            </td>
+                                            <td><span t-field="beam.te_helai"/></td>
+                                            <td>+/- <span t-field="beam.qty_beam"/></td>
+                                            <td>+/- <span t-field="beam.jml_beam"/></td>
+                                            <td><span t-field="beam.type_beam_id"/></td>
+                                            <td><span t-field="beam.lebar_beam"/></td>
+                                            <td>+/- <span t-field="beam.total_panjang"/></td>
+                                            <td><span t-field="beam.unit_wv"/></td>
+                                            <td><span t-field="beam.date"/></td>
+                                            <td/>
+                                            <td/>
+                                            <td/>
+                                            <td/>
+                                            <td/>
+                                            <td/>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="font-weight-bold">
+                                            <td colspan="3">TOTAL</td>
+                                            <td colspan="2" align="right" style="padding-right: 10 px;">+/- <span t-esc="ttl_jml_beam"/></td>
+                                            <td/>
+                                            <td colspan="2" align="right" style="padding-right: 10 px;">+/- <span t-esc="ttl_pjg_beam"/></td>
+                                            <td colspan="2">TOTAL</td>
+                                            <td colspan="6" border="0"/>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </t>
+                        <div class="tanda-tangan">
+                            <div class="row">
+                                <div class="col-8">
+                                    <p class="p-label">Dibuat Oleh :</p> <br/> <br/> <br/>
+                                    <p>Tgl: <span t-field="doc.tanggal"/></p> 
+                                </div>
+                                <div class="col-8">
+                                    <p class="p-label">Diterima Oleh :</p> <br/> <br/> <br/>
+                                    <p>Tgl: <span t-field="doc.tanggal"/></p> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        </data>
+    </odoo>
