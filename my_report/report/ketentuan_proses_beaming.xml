@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_ketentuan_proses_beaming" model="report.paperformat">
+            <field name="name">Ketentuan Proses Beaming A4</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">2</field>
+            <field name="margin_bottom">2</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+            id="action_ketentuan_proses_beaming"
+            model="persiapan.beaming"
+            string="Ketentuan Proses Beaming A4"
+            report_type="qweb-pdf"
+            name="my_report.ketentuan_proses_beaming"
+            file="my_report.ketentuan_proses_beaming"
+        />
+
+        <record id="action_ketentuan_proses_beaming" model="ir.actions.report">
+            <field name="paperformat_id" ref="paperformat_ketentuan_proses_beaming"/>
+        </record>
+
+        <template id="ketentuan_proses_beaming">
+            <t t-call="web.basic_layout">
+                <style>
+                    table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    table td, table th {
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                    }
+                    table tr:nth-child(even){background-color: #f2f2f2;}
+                </style>
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page">
+                        <div class="text-right">PSZ-23.2.REV-11</div>
+                        <div class="text-center">
+                            <h3><b>KETENTUAN PROSES BEAMING</b></h3>
+                        </div>
+                        <div class="text-center">
+                            <h4><b>STANDARD TENSION</b></h4>
+                        </div>
+                        <div class="text-center">
+                            Tension Beam Stand : <span t-esc="doc.tension_stand"/>
+                        </div>
+                        <div class="text-center">
+                            Tension Beam Winding : <span t-esc="doc.tension_winding"/>
+                        </div>
+                        <div class="text-center">
+                            Tension Beam Harned : <span t-esc="doc.tension_harned"/>
+                        </div>
+                        <div class="row">
+                            <table class="table-condensed" width="100%">
+                                <thead>
+                                    <tr class="text-center">
+                                        <td style="border : 1px solid black">No</td>
+                                        <td style="border : 1px solid black">Diisi untuk beam</td>
+                                        <td style="border : 1px solid black">Type</td>
+                                        <td style="border : 1px solid black">Lebar Beam (Inch)</td>
+                                        <td style="border : 1px solid black">Panjang (Yard)</td>
+                                        <td style="border : 1px solid black">Panjang (Meter)</td>
+                                        <td style="border : 1px solid black">Jumlah Beam</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="no" t-value="0"/>
+                                        <t t-set="no" t-value="no + 1"/>
+                                        <tr>
+                                            <td style="border : 1px solid black">
+                                                <span t-esc="no"/>
+                                            </td>
+                                            <td style="border : 1px solid black">
+                                                <span t-esc="doc.machine_id.name"/>
+                                            </td>
+                                            <td style="border : 1px solid black">
+                                                <t t-foreach="doc.beaming_id" t-as="beaming">
+                                                    <span t-esc="beaming.type_beam_id.name"/>
+                                                </t>
+                                            </td>
+                                            <td style="border : 1px solid black">
+                                                <span t-esc="doc.lebar"/>
+                                            </td>
+                                            <td style="border : 1px solid black">
+                                                <span t-esc="doc.panjang"/>
+                                            </td>
+                                            <td style="border : 1px solid black">
+                                                <span t-esc="doc.panjang_mtr"/>
+                                            </td>
+                                            <td style="border : 1px solid black">
+                                                <span t-esc="doc.jmlh_beam"/>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br/>
+    
+                        <table class="table-condensed" width="100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="border : 1px solid black" rowspan="2" width="3%">NO</th>
+                                    <th style="border : 1px solid black" rowspan="2" width="5%">Tanggal</th>
+                                    <th style="border : 1px solid black" rowspan="2" width="5%">Shift</th>
+                                    <th style="border : 1px solid black" rowspan="2" width="6%">No Beam</th>
+                                    <th style="border : 1px solid black" rowspan="2" width="5%">Unit</th>
+                                    <th style="border : 1px solid black" rowspan="2" width="5%">Bruto (KG)</th>
+                                    <th style="border : 1px solid black" rowspan="2" width="5%">Tarra (Kg)</th>
+                                    <th style="border : 1px solid black" rowspan="2" width="5%">Netto (KG)</th>
+                                    <th style="border : 1px solid black" rowspan="2" width="5%">Panjang (Yard)</th>
+                                    <th style="border : 1px solid black" colspan="4">Benang Los</th>
+                                </tr>
+                                <tr class="text-center">
+                                    <td style="border : 1px solid black" width="5%">Jml</td>
+                                    <td style="border : 1px solid black" width="5%">Mtr Ke</td>
+                                    <td style="border : 1px solid black" width="5%">Jml</td>
+                                    <td style="border : 1px solid black" width="5%">Mtr Ke</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="no" t-value="0"/>
+                                <t t-foreach="doc.beaming_id.beaming_details_ids" t-as="beam">
+                                    <t t-set="no" t-value="no + 1"/>
+                                    <tr>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="no"/>
+                                        </td>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="beam.date"/>
+                                        </td>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="beam.shift"/>
+                                        </td>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="beam.lot_id.name"/>
+                                        </td>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="beam.unit.name"/>
+                                        </td>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="beam.bruto"/>
+                                        </td>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="beam.tarra"/>
+                                        </td>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="beam.netto"/>
+                                        </td>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="beam.panjang"/>
+                                        </td>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="beam.jml_loss_awal"/>
+                                        </td>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="beam.meter_loss_awal"/>
+                                        </td>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="beam.jml_loss_akhir"/>
+                                        </td>
+                                        <td style="border : 1px solid black ; height: 30px;">
+                                            <span t-esc="beam.meter_loss_akhir"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tr>
+                                <td style="border : none ; height: 30px;">
+                                    Catatan
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+                
+            </t>
+        </template>
+    </data>
+</odoo>
